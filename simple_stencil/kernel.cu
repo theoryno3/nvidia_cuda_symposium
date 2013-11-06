@@ -2,8 +2,8 @@
 #include "device_launch_parameters.h"
 #include <stdio.h>
 
-#define N 1024
-#define RADIUS 5
+#define N 1024*1024
+#define RADIUS 7
 #define BLOCK 512
 
 __global__ void stencil_1d(int n, double *in, double *out)
