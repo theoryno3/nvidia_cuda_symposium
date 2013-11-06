@@ -5,7 +5,7 @@
 __global__ void add(int *a, int *b, int *c)
 {
 	/* insert correct index so that each element is calculated by a different thread */
-	c[FIXME] = a[FIXME] + b[FIXME];
+	c[threadIdx.x] = a[threadIdx.x] + b[threadIdx.x];
 }
 
 /* experiment with different values of N */
@@ -45,7 +45,7 @@ int main()
 	/* launch the kernel on the GPU */
 	/* insert the correct launch parameters to use 1 block and N threads */
 	/* how large can you make N?  */
-	add<<< FIXME, FIXME >>>( d_a, d_b, d_c );
+	add<<< 1, size >>>( d_a, d_b, d_c );
 
 	/* copy result back to host */
 
