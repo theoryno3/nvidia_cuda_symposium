@@ -10,7 +10,7 @@ __global__ void stencil_1d(int n, double *in, double *out)
 {
 	/* calculate global index in the array */
 	/* insert code to calculate my global index in the array using block and thread build-in variables */
-	int gindex = FIXME
+	int gindex = threadIdx.x + blockIdx.x*blockDim.x;
 	
 	/* return if my global index is larger than the array size */
 	if( gindex >= n ) return;
@@ -28,7 +28,7 @@ __global__ void stencil_1d(int n, double *in, double *out)
 	for( int i = gindex-(RADIUS); i <= gindex+(RADIUS); i++ ) 
 	{
 		/* add the required elements from the array "in" to the temporary variable "result" */ 
-		result = FIXME;
+		result += in[i];
 	}
 
 	/* store the result in the "out" array */
@@ -68,7 +68,7 @@ int main()
 	dim3 blocks( BLOCK, 1, 1);
 
 	/* insert code for proper grid size in X dimension */
-	dim3 grids( FIXME, 1, 1);
+	dim3 grids( N/BLOCK, 1, 1);
 
 	/* start the timers */
 
