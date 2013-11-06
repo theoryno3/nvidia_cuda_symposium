@@ -5,12 +5,13 @@
 __global__ void add(int *a, int *b, int *c)
 {
     /* insert code to calculate the index properly using blockIdx.x, blockDim.x, threadIdx.x */
-	int index = FIXME
+	int index = threadIdx.x + blockIdx.x * blockDim.x; // What is M (or blockDim.x)? 
+                                                           // Well, is the number of threads per block that is a constant.
 	c[index] = a[index] + b[index];
 }
 
 /* experiment with N */
-/* how large can it be? */
+/* how large can it be? */ // Assumes that the dimension fits inside RAM and each dimension is divisible by 32
 #define N (2048*2048)
 #define THREADS_PER_BLOCK 512
 
@@ -45,7 +46,7 @@ int main()
 
 	/* launch the kernel on the GPU */
 	/* insert the launch parameters to launch the kernel properly using blocks and threads */ 
-	add<<< FIXME, FIXME >>>( d_a, d_b, d_c );
+	add<<< N/THREADS_PER_BLOCK, THREADS_PER_BLOCK >>>( d_a, d_b, d_c );
 
 	/* copy result back to host */
 
