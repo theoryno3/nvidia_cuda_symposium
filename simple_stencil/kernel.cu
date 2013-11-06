@@ -68,7 +68,7 @@ int main()
 	dim3 blocks( BLOCK, 1, 1);
 
 	/* insert code for proper grid size in X dimension */
-	dim3 grids( N/BLOCK, 1, 1);
+	dim3 grids( (N/BLOCK)+1, 1, 1);
 
 	/* start the timers */
 
