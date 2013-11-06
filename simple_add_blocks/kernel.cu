@@ -48,6 +48,7 @@ int main()
 
 	/* launch the kernel on the GPU */
 	/* finish this kernel launch with N blocks and 1 thread per block */
+        // This is not what you would do in real life
 	add<<< size, 1 >>>( d_a, d_b, d_c );
 
 	/* copy result back to host */
