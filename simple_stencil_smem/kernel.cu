@@ -2,9 +2,10 @@
 #include "device_launch_parameters.h"
 #include <stdio.h>
 
-#define N 10000
+#define N 1024*1024
 #define RADIUS 5
-#define BLOCK 32
+//#define BLOCK 32
+#define BLOCK 64 // This creates a DATA RACE because of the warp size (ie, 32); need to sync threads
 
 __global__ void stencil_1d(int n, double *in, double *out)
 {
@@ -17,6 +18,7 @@ __global__ void stencil_1d(int n, double *in, double *out)
 
 	/* return if my global index is larger than the array size */
 	if( gindex >= n ) return;
+
 
 	/* read input elements into shared memory */
 	temp[lindex] = in[gindex];
@@ -39,6 +41,7 @@ __global__ void stencil_1d(int n, double *in, double *out)
 	
 	double result = 0.0;
 
+	__syncthreads();
 	for( int i = -(RADIUS); i <= (RADIUS); i++ ) 
 	{
 		result += temp[lindex + i];
