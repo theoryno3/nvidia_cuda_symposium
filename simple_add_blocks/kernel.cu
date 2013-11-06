@@ -5,7 +5,7 @@
 __global__ void add(int *a, int *b, int *c)
 {
     /* finish this code to calculate c element-wise from a and b where each block calculates one element */
-	c[FIXME] = a[FIXME] + b[FIXME];
+	c[blockIdx.x] = a[blockIdx.x] + b[blockIdx.x];
 }
 
 
@@ -15,7 +15,7 @@ __global__ void add(int *a, int *b, int *c)
 
 int main()
 {
-    int *a, *b, *c;
+	int *a, *b, *c;
 	int *d_a, *d_b, *d_c;
 	int size = N * sizeof( int );
 
@@ -23,7 +23,8 @@ int main()
 	
 	cudaMalloc( (void **) &d_a, size );
 	/* insert code here for d_b and d_c */
-        FIXME
+        cudaMalloc( (void **) &d_b, size );
+	cudaMalloc( (void **) &d_c, size ); 
 
 	/* allocate space for host copies of a, b, c and setup input values */
 
@@ -43,11 +44,11 @@ int main()
 	
 	cudaMemcpy( d_a, a, size, cudaMemcpyHostToDevice );
 	/* insert code to copy b to the device */
-        FIXME
+        cudaMemcpy( d_b, b, size, cudaMemcpyHostToDevice );
 
 	/* launch the kernel on the GPU */
 	/* finish this kernel launch with N blocks and 1 thread per block */
-	add<<< FIXME, FIXME >>>( d_a, d_b, d_c );
+	add<<< size, 1 >>>( d_a, d_b, d_c );
 
 	/* copy result back to host */
 
